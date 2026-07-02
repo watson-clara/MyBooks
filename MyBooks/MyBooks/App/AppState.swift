@@ -17,7 +17,7 @@ final class AppState {
     var searchText = ""
     var isScanning = false
 
-    private let folderManager = LibraryFolderManager()
+    private let folderManager = LibraryFolderService()
 
     init() {
         libraryURL = folderManager.loadLibraryFolder()

@@ -4,7 +4,6 @@
 //
 //  Created by clarafication on 6/26/26.
 //
-
 import SwiftUI
 import SwiftData
 
@@ -14,26 +13,18 @@ struct MyBooksApp: App {
     @State private var appState = AppState()
 
     var body: some Scene {
-
         WindowGroup {
-
             NavigationSplitView {
-
                 List(
                     SidebarItem.allCases,
                     selection: $appState.selectedSidebarItem
                 ) { item in
-
                     Label(item.title, systemImage: item.systemImage)
                         .tag(item)
-
                 }
                 .navigationTitle("MyBooks")
-
             } detail: {
-
                 switch appState.selectedSidebarItem ?? .library {
-
                 case .library:
                     LibraryView()
 
@@ -53,10 +44,13 @@ struct MyBooksApp: App {
                 }
             }
             .environment(appState)
-
         }
-        .modelContainer(for: Book.self)
-
+        .modelContainer(for: [
+            BookMetadata.self,
+            AnnotationRecord.self,
+            AnnotationCategory.self,
+            BookTag.self,
+            BookCategory.self
+        ])
     }
-
 }

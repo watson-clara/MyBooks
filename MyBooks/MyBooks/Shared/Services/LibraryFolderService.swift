@@ -1,5 +1,5 @@
 //
-//  LibraryFolderManager.swift
+//  LibraryFolderService.swift
 //  MyBooks
 //
 //  Created by clarafication on 6/26/26.
@@ -7,13 +7,20 @@
 
 import Foundation
 
-final class LibraryFolderManager {
+final class LibraryFolderService {
 
     private let bookmarkKey = "libraryFolderBookmark"
 
     func saveLibraryFolder(_ url: URL) throws {
+        let didAccess = url.startAccessingSecurityScopedResource()
+        defer {
+            if didAccess {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+
         let bookmarkData = try url.bookmarkData(
-            options: [],
+            options: [.minimalBookmark],
             includingResourceValuesForKeys: nil,
             relativeTo: nil
         )
@@ -43,6 +50,7 @@ final class LibraryFolderManager {
 
             return url
         } catch {
+            print("Failed to resolve library folder bookmark:", error)
             clearLibraryFolder()
             return nil
         }
@@ -52,3 +60,4 @@ final class LibraryFolderManager {
         UserDefaults.standard.removeObject(forKey: bookmarkKey)
     }
 }
+
